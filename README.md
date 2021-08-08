@@ -1,6 +1,6 @@
-# Seedifyuba
+# BasicPayments
 
-Smart contract and basic service to solve payments in the seedifyuba project.
+Smart contract and basic service to solve payments in the BasicPayments project.
 
 ## Installation
 
@@ -10,7 +10,7 @@ Once you have that in place, you can install the dependencies with npm through
 
 `npm i`
 
-## Seedifyuba - Service
+## BasicPayments - Service
 
 This is a minimum project that will serve as a guide to help students to do the rest of the integration
 
@@ -117,7 +117,7 @@ content-type: application/json; charset=utf-8
 
 ```
 
-## Seedifyuba - SC
+## BasicPayments - SC
 
 This project is a smart contract made for the subject `Taller de programacion 2` of the `FIUBA`. The project allows social entepreneurs to create projects that other users funds while enabling the funders to track that the funds actually reach the destination which they intended, there is also a reviewer of the project which ensures that the project is going good and is the one in charge of releasing the funds.
 
@@ -163,7 +163,7 @@ depending on the network you want to use.
 
 Keep in mind that you have to set the INFURA_API_KEY and MNEMONIC envvars(the .env file can be used for this).
 
-To get the deployed contract address just look in the `deployments/<network>/Seedifyuba.json` file.
+To get the deployed contract address just look in the `deployments/<network>/BasicPayments.json` file.
 
 #### More scripts
 

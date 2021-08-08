@@ -1,78 +1,37 @@
 import { ethers, waffle, getNamedAccounts, deployments } from "hardhat";
-import { Wallet, Transaction, BigNumberish, BigNumber } from "ethers";
+import { Wallet, Transaction, BigNumberish } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { MockProvider } from "ethereum-waffle";
-import { Seedifyuba } from "../typechain";
+import { BasicPayments } from "../typechain";
 const { loadFixture } = waffle;
 
-export async function fixtureDeployedSeedifyuba(): Promise<Seedifyuba> {
+export async function fixtureDeployedBasicPayments(): Promise<BasicPayments> {
   await deployments.fixture();
   const { deployer } = await getNamedAccounts();
-  const seedifyuba = <unknown>await ethers.getContract("Seedifyuba", deployer);
-  return seedifyuba as Seedifyuba;
+  const basicPayments = <unknown>await ethers.getContract("BasicPayments", deployer);
+  return basicPayments as BasicPayments;
 }
 
-export function fixtureProjectCreatedBuilder(stagesCost: BigNumberish[]) {
+export function fixturePaymentReceived(amountToBeSent: BigNumberish) {
   return async function fixtureProjectCreated(
     _w: Wallet[],
     _p: MockProvider,
   ): Promise<{
-    projectCreationTx: Transaction;
-    seedifyuba: Seedifyuba;
+    paymentTx: Transaction;
+    basicPayments: BasicPayments;
     deployer: SignerWithAddress;
-    projectOwner: SignerWithAddress;
-    projectReviewer: SignerWithAddress;
-    aFunder: SignerWithAddress;
-    anotherFunder: SignerWithAddress;
-    projectId: BigNumberish;
+    sender: SignerWithAddress;
   }> {
-    const [deployer, projectOwner, projectReviewer, aFunder, anotherFunder] = await ethers.getSigners();
-    const seedifyuba = await loadFixture(fixtureDeployedSeedifyuba);
-    const projectId = await seedifyuba.nextId();
-    const projectCreationTx = <Transaction>(
-      await seedifyuba.createProject(stagesCost, projectOwner.address, projectReviewer.address)
-    );
+    const { deployer: deployerAddress, sender: senderAddress } = await getNamedAccounts();
+    const deployer = await ethers.getSigner(deployerAddress);
+    const sender = await ethers.getSigner(senderAddress);
+    const basicPayments = await loadFixture(fixtureDeployedBasicPayments);
+    const paymentTx = <Transaction>await basicPayments.receivePayment({ value: amountToBeSent });
     return {
-      projectCreationTx,
-      seedifyuba,
+      paymentTx,
+      basicPayments,
       deployer,
-      projectOwner,
-      aFunder,
-      anotherFunder,
-      projectId,
-      projectReviewer,
-    };
-  };
-}
-
-export function fixtureFundedProjectBuilder(stagesCost: BigNumberish[]) {
-  return async function fixtureProjectCreated(
-    _w: Wallet[],
-    _p: MockProvider,
-  ): Promise<{
-    seedifyuba: Seedifyuba;
-    deployer: SignerWithAddress;
-    projectOwner: SignerWithAddress;
-    projectReviewer: SignerWithAddress;
-    funder: SignerWithAddress;
-    projectId: BigNumberish;
-  }> {
-    const totalCost: BigNumber = stagesCost.reduce(
-      (acc: BigNumber, curr) => BigNumber.from(curr).add(acc),
-      BigNumber.from(0),
-    );
-    const { seedifyuba, aFunder, deployer, projectOwner, projectReviewer, projectId } = await loadFixture(
-      fixtureProjectCreatedBuilder(stagesCost),
-    );
-    const seedifyubaFunder = seedifyuba.connect(aFunder);
-    await seedifyubaFunder.fund(projectId, { value: totalCost.toString() });
-    return {
-      seedifyuba,
-      deployer,
-      projectOwner,
-      projectReviewer,
-      funder: aFunder,
-      projectId,
+      sender,
     };
   };
 }
