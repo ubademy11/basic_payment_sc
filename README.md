@@ -1,6 +1,6 @@
 # BasicPayments
 
-Smart contract and basic service to solve payments in the BasicPayments project.
+Smart contract and basic service to solve payments in the Taller de Programacion 2' projects.
 
 ## Installation
 
@@ -29,97 +29,91 @@ The following endpoints are available:
 - Create wallet: POST /wallet - No body 
 - Get wallets: GET /wallet
 - Get wallet: GET /wallet/:id:
-- Create project: POST /project - Body params: reviewerId(integer), ownerId(integer), stagesCost(array of numbers)
-- Get project: GET /project/:hash:
+- Deposit ethers into the Smart contract: POST /deposit - Body params: senderId(integer), amountInEthers(string)
+- Get deposit receipt: GET /deposit/:txHash:
 
 ### Usage example
 
 ```sh
-$ http POST http://localhost:300/walllet
+$ http POST http://localhost:3000/wallet
 HTTP/1.1 200 OK
 Connection: keep-alive
-Date: Fri, 16 Apr 2021 02:05:45 GMT
+Date: Sun, 08 Aug 2021 19:26:53 GMT
 Keep-Alive: timeout=5
 content-length: 145
 content-type: application/json; charset=utf-8
 
 {
-    "address": "0xA3A9D25d69A00F17AA7a7DE96fA6729655cFB463",
-    "id": 3,
-    "privateKey": "0xb9444636faac0ab28ac177c767fa434d7c0767d1b3019d980e079a4d644727ba"
+    "address": "0x7E039A00fFFD8d8C898e77e52351c799C99D3a2D",
+    "id": 1,
+    "privateKey": "0x67bb00f89f7b50f9e2924e423d00889c627b9acdc20b738ce00ccdcf6e4b8da0"
 }
 
 $ http POST http://localhost:3000/wallet
 HTTP/1.1 200 OK
 Connection: keep-alive
-Date: Fri, 16 Apr 2021 02:05:46 GMT
+Date: Sun, 08 Aug 2021 19:26:54 GMT
 Keep-Alive: timeout=5
 content-length: 145
 content-type: application/json; charset=utf-8
 
 {
-    "address": "0x5228DA7727a15904FaF8c98194f710AcD932dba9",
-    "id": 4,
-    "privateKey": "0x6906bdfcebf1e2366d3c32aa001b0b7e882f719daabe590650f854279979c62e"
+    "address": "0x6698F9b4c67AeDAcd728297F2bF9eC15993398a4",
+    "id": 2,
+    "privateKey": "0x7d7b4134704871ea90bc417a9fb21d8e643e076bd67f1253189e75181258c500"
 }
 
-$ http POST http://localhost:3000/project ownerId=1 reviewerId=2 stagesCost:='[10,20,10]'
+$ http POST http://localhost:3000/deposit senderId=1 amountInEthers='0.01'          
 HTTP/1.1 200 OK
 Connection: keep-alive
-Date: Fri, 16 Apr 2021 02:07:07 GMT
+Date: Sun, 08 Aug 2021 19:27:38 GMT
 Keep-Alive: timeout=5
-content-length: 981
+content-length: 538
 content-type: application/json; charset=utf-8
 
 {
-    "chainId": 42,
-    "data": "0xd86233940000000000000000000000000000000000000000000000000000000000000060000000000000000000000000f018be4fe4fbd4ca1b1162a44bb139a343c2087b00000000000000000000000019544c4b8ce1c08c81bb67c4075265d967935dcd00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000008ac7230489e80000000000000000000000000000000000000000000000000001158e460913d000000000000000000000000000000000000000000000000000008ac7230489e80000",
-    "from": "0x55B86Ea5ff4bb1E674BCbBe098322C7dD3f294BE",
+    "chainId": 4,
+    "data": "0xd0e30db0",
+    "from": "0x7E039A00fFFD8d8C898e77e52351c799C99D3a2D",
     "gasLimit": {
-        "hex": "0x02ba56",
+        "hex": "0xb044",
         "type": "BigNumber"
     },
     "gasPrice": {
-        "hex": "0x02d1375900",
+        "hex": "0x3b9aca08",
         "type": "BigNumber"
     },
-    "hash": "0x30b003c570eccaf1705acd4621f72993acb51715f8decbf61535f21376cfe1d2",
-    "nonce": 19,
-    "r": "0xd06642b8b98b120829d24cc654b6ae9a22a16c31aa9e714c8f5306befe01cd3f",
-    "s": "0x5ad6c768417a99aa63f9a2e2aa3f493db601d9e317922535fb6c54f8cdc0fba9",
-    "to": "0xD0436D8e93df9c543eFd2c04152393A8D05B5A05",
+    "hash": "0x9f98447de34d3245ce1976956334336a6302befc4f204ac44a7cac0526caa82d",
+    "nonce": 0,
+    "r": "0xc78a2f0914988bb37e62c16ffb91ae0335d39fd3dc246fd0c269dbaf0b331589",
+    "s": "0x423f245bcc46c872404b43c34fcb789cb0d3befdd44ec928b96bb25a5a887762",
+    "to": "0x76b8DA0BB9b9981403586A574d10fA783f08Aa05",
     "type": null,
-    "v": 119,
+    "v": 44,
     "value": {
-        "hex": "0x00",
+        "hex": "0x2386f26fc10000",
         "type": "BigNumber"
     }
 }
 
-$ http GET http://localhost:3000/project/0x30b003c570eccaf1705acd4621f72993acb51715f8decbf61535f21376cfe1d2
+$ http GET http://localhost:3000/deposit/0x9f98447de34d3245ce1976956334336a6302befc4f204ac44a7cac0526caa82d
 HTTP/1.1 200 OK
 Connection: keep-alive
-Date: Fri, 16 Apr 2021 02:09:27 GMT
+Date: Sun, 08 Aug 2021 19:28:00 GMT
 Keep-Alive: timeout=5
-content-length: 177
+content-length: 121
 content-type: application/json; charset=utf-8
 
 {
-    "projectId": 16,
-    "projectOwnerAddress": "0xf018Be4Fe4fBD4cA1B1162A44bB139a343C2087b",
-    "projectReviewerAddress": "0x19544c4b8ce1c08c81bb67C4075265D967935DCd",
-    "stagesCost": [
-        10,
-        20,
-        10
-    ]
+    "amountSent": {
+        "hex": "0x2386f26fc10000",
+        "type": "BigNumber"
+    },
+    "senderAddress": "0x7E039A00fFFD8d8C898e77e52351c799C99D3a2D"
 }
 
 ```
 
-## BasicPayments - SC
-
-This project is a smart contract made for the subject `Taller de programacion 2` of the `FIUBA`. The project allows social entepreneurs to create projects that other users funds while enabling the funders to track that the funds actually reach the destination which they intended, there is also a reviewer of the project which ensures that the project is going good and is the one in charge of releasing the funds.
 
 ### Usage
 
