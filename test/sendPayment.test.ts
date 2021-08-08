@@ -1,6 +1,6 @@
 import chai from "chai";
 import { waffle, ethers, getNamedAccounts } from "hardhat";
-import { fixturePaymentReceived } from "./common-fixtures";
+import { fixtureDepositMade } from "./common-fixtures";
 import { ContractTransaction } from "ethers";
 import { BasicPayments } from "../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
@@ -12,7 +12,7 @@ const { expect } = chai;
 describe(`BasicPayments - Send payments from contract`, function () {
   const amountToBeReceivedInEthers = "3";
   const amountReceived = ethers.utils.parseEther(amountToBeReceivedInEthers);
-  const fixture = fixturePaymentReceived(amountReceived);
+  const fixture = fixtureDepositMade(amountReceived);
   const testSendPayment = (amountToBeSentInEthers: string) => {
     const amountToBeSent = ethers.utils.parseEther(amountToBeSentInEthers);
     describe(`GIVEN the Smart Contract was deployed and ${amountToBeReceivedInEthers} ethers were sent`, () => {

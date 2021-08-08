@@ -12,7 +12,7 @@ export async function fixtureDeployedBasicPayments(): Promise<BasicPayments> {
   return basicPayments as BasicPayments;
 }
 
-export function fixturePaymentReceived(amountToBeSent: BigNumberish) {
+export function fixtureDepositMade(amountToBeSent: BigNumberish) {
   return async function fixtureProjectCreated(
     _w: Wallet[],
     _p: MockProvider,
@@ -26,7 +26,7 @@ export function fixturePaymentReceived(amountToBeSent: BigNumberish) {
     const deployer = await ethers.getSigner(deployerAddress);
     const sender = await ethers.getSigner(senderAddress);
     const basicPayments = await loadFixture(fixtureDeployedBasicPayments);
-    const paymentTx = <Transaction>await basicPayments.receivePayment({ value: amountToBeSent });
+    const paymentTx = <Transaction>await basicPayments.deposit({ value: amountToBeSent });
     return {
       paymentTx,
       basicPayments,

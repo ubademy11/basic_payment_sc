@@ -5,47 +5,40 @@ const getContract = (config, wallet) => {
   return new ethers.Contract(config.contractAddress, config.contractAbi, wallet);
 };
 
-const toWei = number => {
-  const WEIS_IN_ETHER = BigNumber(10).pow(18);
-  return BigNumber(number).times(WEIS_IN_ETHER).toFixed();
-};
+const deposits = {};
 
-const projects = {};
-
-const createProject = ({ config }) => async (
-  deployerWallet,
-  stagesCost,
-  projectOwnerAddress,
-  projectReviewerAddress,
-) => {
-  const bookBnb = await getContract(config, deployerWallet);
-  const tx = await bookBnb.createProject(stagesCost.map(toWei), projectOwnerAddress, projectReviewerAddress);
-  tx.wait(1).then(receipt => {
-    console.log("Transaction mined");
-    const firstEvent = receipt && receipt.events && receipt.events[0];
-    console.log(firstEvent);
-    if (firstEvent && firstEvent.event == "ProjectCreated") {
-      const projectId = firstEvent.args.projectId.toNumber();
-      console.log();
-      projects[tx.hash] = {
-        projectId,
-        stagesCost,
-        projectOwnerAddress,
-        projectReviewerAddress,
-      };
-    } else {
-      console.error(`Project not created in tx ${tx.hash}`);
-    }
+const payToContract = ({ config }) => async (senderWallet, amountToSend) => {
+  const basicPayments = await getContract(config, deployerWallet);
+  const tx = await basicPayments.connect(senderWallet).deposits({
+    value: await ethers.utils.parseEther(amountToSend),
   });
+  tx.wait(1).then(
+    receipt => {
+      console.log("Transaction mined");
+      const firstEvent = receipt && receipt.events && receipt.events[0];
+      console.log(firstEvent);
+      if (firstEvent && firstEvent.event == "DepositMade") {
+        deposits[tx.hash] = {
+          senderAddress: firstEvent.args.sender,
+          amountSent: firstEvent.args.amount,
+        };
+      } else {
+        console.error(`Payment not created in tx ${tx.hash}`);
+      }
+    },
+    error => {
+      const reasonsList = error.results && Object.values(error.results).map(o => o.reason);
+      const message = error instanceof Object && "message" in error ? error.message : JSON.stringify(error);
+      console.error("reasons List");
+      console.error(reasonsList);
+
+      console.error("message");
+      console.error(message);
+    },
+  );
   return tx;
 };
 
-const getProject = () => async id => {
-  console.log(`Getting project ${id}: ${projects[id]}`);
-  return projects[id];
-};
-
 module.exports = dependencies => ({
-  createProject: createProject(dependencies),
-  getProject: getProject(dependencies),
+  payToContract: payToContract(dependencies),
 });

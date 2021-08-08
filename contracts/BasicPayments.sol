@@ -17,7 +17,7 @@ contract BasicPayments is Ownable {
 
     event PaymentMade(address indexed receiver, uint256 amount);
 
-    event PaymentReceived(address indexed sender, uint256 amount);
+    event DepositMade(address indexed sender, uint256 amount);
 
     /**
         @notice Mapping of payments sent to an address
@@ -26,12 +26,12 @@ contract BasicPayments is Ownable {
 
     /**
         @notice Function to receive payments
-        Emits PaymentReceived with the sender and the amount as a parameter
+        Emits DepositMade with the sender and the amount as a parameter
         Fails if value sent is 0
         @dev it calls an internal function that does this entirely
      */
-    function receivePayment() external payable {
-        _receivePayment(msg.sender, msg.value);
+    function deposit() external payable {
+        _deposit(msg.sender, msg.value);
     }
 
     /**
@@ -52,21 +52,21 @@ contract BasicPayments is Ownable {
     }
 
     /**
-        @notice fallback function: acts in the same way that receivePayment does
+        @notice fallback function: acts in the same way that deposit does
      */
     receive() external payable {
-        _receivePayment(msg.sender, msg.value);
+        _deposit(msg.sender, msg.value);
     }
 
     /**
         @notice Function to receive payments
-        Emits PaymentReceived with the sender and the amount as a parameter
+        Emits DepositMade with the sender and the amount as a parameter
         Fails if value sent is 0
         @dev it calls an internal function that does this entirely
      */
-    function _receivePayment(address sender, uint256 amount) internal {
+    function _deposit(address sender, uint256 amount) internal {
         require(amount > 0, "did not send any value");
         sentPayments[sender] = sentPayments[sender].add(amount);
-        emit PaymentReceived(sender, amount);
+        emit DepositMade(sender, amount);
     }
 }

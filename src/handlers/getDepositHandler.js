@@ -3,18 +3,18 @@ function schema() {
     params: {
       type: "object",
       properties: {
-        id: {
+        txHash: {
           type: "string",
         },
       },
     },
-    required: ["id"],
+    required: ["txHash"],
   };
 }
 
 function handler({ contractInteraction }) {
   return async function (req, reply) {
-    const body = await contractInteraction.getProject(req.params.id);
+    const body = await contractInteraction.getDepositReceipt(req.params.txHash);
     reply.code(200).send(body);
   };
 }

@@ -11,8 +11,8 @@ const { loadFixture } = waffle;
 const { expect } = chai;
 
 type PaymentFunction = (contractWithSigner: BasicPayments, amountToBeSent: BigNumber) => Promise<ContractTransaction>;
-const receivePayment: PaymentFunction = (contractWithSigner, amountToBeSent) => {
-  return contractWithSigner.receivePayment({ value: amountToBeSent });
+const deposit: PaymentFunction = (contractWithSigner, amountToBeSent) => {
+  return contractWithSigner.deposit({ value: amountToBeSent });
 };
 
 const receiveFallback: PaymentFunction = (contractWithSigner, amountToBeSent) => {
@@ -49,8 +49,8 @@ const makeTestsPaymentToContract = (paymentFunction: PaymentFunction, functionNa
             return expect(paymentTx).to.changeEtherBalance(basicPayments, amountToBeSent);
           });
 
-          it(`THEN the contract emits a PaymentReceived event`, async function () {
-            return expect(paymentTx).to.emit(basicPayments, "PaymentReceived").withArgs(sender.address, amountToBeSent);
+          it(`THEN the contract emits a DepositMade event`, async function () {
+            return expect(paymentTx).to.emit(basicPayments, "DepositMade").withArgs(sender.address, amountToBeSent);
           });
 
           it(`THEN the contract marks that the user has sent the funds`, async function () {
@@ -83,4 +83,4 @@ const makeTestsPaymentToContract = (paymentFunction: PaymentFunction, functionNa
 };
 
 makeTestsPaymentToContract(receiveFallback, "receiveFallback");
-makeTestsPaymentToContract(receivePayment, "receivePayment");
+makeTestsPaymentToContract(deposit, "deposit");
