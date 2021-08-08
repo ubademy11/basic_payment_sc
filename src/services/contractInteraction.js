@@ -1,5 +1,5 @@
-const BigNumber = require("bignumber.js");
 const ethers = require("ethers");
+const getDepositHandler = require("../handlers/getDepositHandler");
 
 const getContract = (config, wallet) => {
   return new ethers.Contract(config.contractAddress, config.contractAbi, wallet);
@@ -7,10 +7,10 @@ const getContract = (config, wallet) => {
 
 const deposits = {};
 
-const payToContract = ({ config }) => async (senderWallet, amountToSend) => {
-  const basicPayments = await getContract(config, deployerWallet);
-  const tx = await basicPayments.connect(senderWallet).deposits({
-    value: await ethers.utils.parseEther(amountToSend),
+const deposit = ({ config }) => async (senderWallet, amountToSend) => {
+  const basicPayments = await getContract(config, senderWallet);
+  const tx = await basicPayments.deposit({
+    value: await ethers.utils.parseEther(amountToSend).toHexString(),
   });
   tx.wait(1).then(
     receipt => {
@@ -39,6 +39,11 @@ const payToContract = ({ config }) => async (senderWallet, amountToSend) => {
   return tx;
 };
 
+const getDepositReceipt = ({}) => async depositTxHash => {
+  return deposits[depositTxHash];
+};
+
 module.exports = dependencies => ({
-  payToContract: payToContract(dependencies),
+  deposit: deposit(dependencies),
+  getDepositReceipt: getDepositReceipt(dependencies),
 });

@@ -1,8 +1,8 @@
 const getWalletData = require("./handlers/getWalletHandler");
 const getWalletsData = require("./handlers/getWalletsHandler");
 const createWallet = require("./handlers/createWalletHandler");
-const createProject = require("./handlers/createProjectHandler");
-const getProject = require("./handlers/getProjectHandler");
+const createDeposit = require("./handlers/createDepositHandler");
+const getDeposit = require("./handlers/getDepositHandler");
 
 function getWalletDataRoute({ services, config }) {
   return {
@@ -31,22 +31,22 @@ function createWalletRoute({ services, config }) {
   };
 }
 
-function createProjectRoute({ services, config }) {
+function createDepositRoute({ services, config }) {
   return {
     method: "POST",
-    url: "/project",
-    schema: createProject.schema(config),
-    handler: createProject.handler({ config, ...services }),
+    url: "/deposit",
+    schema: createDeposit.schema(config),
+    handler: createDeposit.handler({ config, ...services }),
   };
 }
 
-function getProjectRoute({ services, config }) {
+function getDepositRoute({ services, config }) {
   return {
     method: "GET",
-    url: "/project/:id",
-    schema: getProject.schema(config),
-    handler: getProject.handler({ config, ...services }),
+    url: "/deposit/:txHash",
+    schema: getDeposit.schema(config),
+    handler: getDeposit.handler({ config, ...services }),
   };
 }
 
-module.exports = [getWalletDataRoute, getWalletsDataRoute, createWalletRoute, createProjectRoute, getProjectRoute];
+module.exports = [getWalletDataRoute, getWalletsDataRoute, createWalletRoute, createDepositRoute, getDepositRoute];
