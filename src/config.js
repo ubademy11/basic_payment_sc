@@ -1,5 +1,5 @@
 require("dotenv").config();
-const network = "rinkeby";
+const network = "kovan";
 const deployArtifact = require(`../deployments/${network}/BasicPayments`);
 const deployerMnemonic = process.env.MNEMONIC;
 const infuraApiKey = process.env.INFURA_API_KEY;

@@ -16,7 +16,7 @@ This is a minimum project that will serve as a guide to help students to do the 
 
 ### Start process
 
-To start the process, after you installed the dependencies and deployed the smart contracts to rinkeby, you can run
+To start the process, after you installed the dependencies and deployed the smart contracts to kovan, you can run
 
 `npm start`
 
@@ -149,7 +149,7 @@ This will generate a browsable html file within the `./docs` folder, to view it 
 
 To deploy the smart contracts just run
 
-`npm run deploy-rinkeby`
+`npm run deploy-kovan`
 
 `npm run deploy-local`
 

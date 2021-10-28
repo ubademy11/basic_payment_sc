@@ -31,6 +31,7 @@ const chainIds = {
   goerli: 5,
   hardhat: 31337,
   mainnet: 1,
+  kovan: 42,
   rinkeby: 4,
   ropsten: 3,
 };
@@ -79,7 +80,7 @@ const config: HardhatUserConfig = {
       chainId: chainIds.hardhat,
     },
     goerli: createTestnetConfig("goerli"),
-    rinkeby: createTestnetConfig("rinkeby"),
+    kovan: createTestnetConfig("kovan"),
     ropsten: createTestnetConfig("ropsten"),
   },
   paths: {
