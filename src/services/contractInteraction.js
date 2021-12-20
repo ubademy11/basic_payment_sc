@@ -39,11 +39,25 @@ const deposit = ({ config }) => async (senderWallet, amountToSend) => {
   return tx;
 };
 
-const getDepositReceipt = ({}) => async depositTxHash => {
+const sendPayment = ({ config }) => async (recepientWallet, deployerWallet, amountToSend) => {
+  const options = { gasLimit: 100000 };
+  try {
+    const basicPayments = await getContract(config, deployerWallet);
+    const amount = await ethers.utils.parseEther(amountToSend).toHexString();
+    const tx = await basicPayments.sendPayment(recepientWallet.address, amount, options);
+    tx.wait(1);
+    console.log(tx);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getDepositReceipt = ({ }) => async depositTxHash => {
   return deposits[depositTxHash];
 };
 
 module.exports = dependencies => ({
   deposit: deposit(dependencies),
   getDepositReceipt: getDepositReceipt(dependencies),
+  sendPayment: sendPayment(dependencies)
 });

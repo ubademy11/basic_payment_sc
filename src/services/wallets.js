@@ -9,7 +9,7 @@ const getDeployerWallet = ({ config }) => () => {
 };
 
 const createWallet = () => async () => {
-  const provider = new ethers.providers.InfuraProvider("kovan", process.env.INFURA_API_KEY);
+  const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
   // This may break in some environments, keep an eye on it
   const wallet = ethers.Wallet.createRandom().connect(provider);
   accounts.push({
@@ -32,8 +32,8 @@ const getWalletData = () => index => {
   return accounts[index - 1];
 };
 
-const getWallet = ({}) => index => {
-  const provider = new ethers.providers.InfuraProvider("kovan", process.env.INFURA_API_KEY);
+const getWallet = ({ }) => index => {
+  const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
 
   return new ethers.Wallet(accounts[index - 1].privateKey, provider);
 };
