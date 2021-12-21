@@ -12,6 +12,8 @@ const deposit = ({ config }) => async (senderWallet, amountToSend) => {
   const tx = await basicPayments.deposit({
     value: await ethers.utils.parseEther(amountToSend).toHexString(),
   });
+  console.log("\n");
+  console.log("transaccion ", tx)
   tx.wait(1).then(
     receipt => {
       console.log("Transaction mined");
@@ -36,20 +38,37 @@ const deposit = ({ config }) => async (senderWallet, amountToSend) => {
       console.error(message);
     },
   );
+
+
   return tx;
 };
 
-const sendPayment = ({ config }) => async (recepientWallet, deployerWallet, amountToSend) => {
+
+const sendPayment = ({ config }) => async (recipientAddress, deployerWallet, amountToSend) => {
   const options = { gasLimit: 100000 };
-  try {
-    const basicPayments = await getContract(config, deployerWallet);
-    const amount = await ethers.utils.parseEther(amountToSend).toHexString();
-    const tx = await basicPayments.sendPayment(recepientWallet.address, amount, options);
-    tx.wait(1);
-    console.log(tx);
-  } catch (error) {
-    console.log(error)
-  }
+  const basicPayments = await getContract(config, deployerWallet);
+  console.log("\n BEFORE SEND \n");
+  const amount = await ethers.utils.parseEther(amountToSend).toHexString();
+  const tx = await basicPayments.sendPayment(recipientAddress, amount, options);
+  console.log("\n after SEND", tx, amount);
+
+  tx.wait(1).then(receipt => {
+    console.log(receipt);
+    return tx;
+  }, error => {
+    const reasonsList = error.results && Object.values(error.results).map(o => o.reason);
+    const message = error instanceof Object && "message" in error ? error.message : JSON.stringify(error);
+    console.error("reasons List");
+    console.error("\n");
+    console.error("\n");
+    console.error(reasonsList);
+
+    console.error("message");
+    console.error(message);
+    throw error;
+  },
+  );
+
 }
 
 const getDepositReceipt = ({ }) => async depositTxHash => {

@@ -52,7 +52,7 @@ function getDepositRoute({ services, config }) {
 function sendPaymentRoute({ services, config }) {
   return {
     method: "POST",
-    url: "/payment",
+    url: "/withdraw",
     schema: sendPayment.schema(config),
     handler: sendPayment.handler({ config, ...services }),
   };

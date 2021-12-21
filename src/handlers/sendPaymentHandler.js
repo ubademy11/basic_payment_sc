@@ -4,7 +4,7 @@ function schema() {
         params: {
             type: "object",
             properties: {
-                walletAddress: {
+                address: {
                     type: "string"
                 },
                 amount: {
@@ -12,14 +12,19 @@ function schema() {
                 }
             },
         },
-        required: ["walletAddress", "amount"],
+        required: ["address", "amount"],
     };
 }
 
 function handler({ contractInteraction, walletService }) {
-    return async function (req, reply) {
-        const body = await contractInteraction.sendPayment(walletService.getWallet(req.query.walletId), walletService.getDeployerWallet(), req.query.amount);
-        return reply.code(200).send(body);
+    return async function (req, res) {
+        // const body = await contractInteraction.sendPayment(req.body.address, walletService.getDeployerWallet(), req.body.amount);
+        // return reply.code(200).send(body);
+        try {
+            return contractInteraction.sendPayment(req.body.address, walletService.getDeployerWallet(), req.body.amount);
+        } catch (err) {
+            return res.sendStatus(422);
+        }
     };
 }
 
