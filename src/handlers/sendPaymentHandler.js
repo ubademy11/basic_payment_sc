@@ -17,13 +17,12 @@ function schema() {
 }
 
 function handler({ contractInteraction, walletService }) {
-    return async function (req, res) {
-        // const body = await contractInteraction.sendPayment(req.body.address, walletService.getDeployerWallet(), req.body.amount);
-        // return reply.code(200).send(body);
+    return async function (req, reply) {
         try {
-            return contractInteraction.sendPayment(req.body.address, walletService.getDeployerWallet(), req.body.amount);
+            await contractInteraction.sendPayment(req.body.address, walletService.getDeployerWallet(), req.body.amount);
+            return reply.send();
         } catch (err) {
-            return res.sendStatus(422);
+            return reply.code(422).send();
         }
     };
 }
