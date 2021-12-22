@@ -22,7 +22,8 @@ function handler({ contractInteraction, walletService }) {
             await contractInteraction.sendPayment(req.body.address, walletService.getDeployerWallet(), req.body.amount);
             return reply.send();
         } catch (err) {
-            return reply.code(422).send();
+            console.log('err', err)
+            return reply.code(422).send(err.message);
         }
     };
 }
