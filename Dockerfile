@@ -1,0 +1,26 @@
+FROM node:12
+
+WORKDIR /app
+
+COPY . /app
+
+EXPOSE 3003
+
+RUN yarn
+
+ENV MNEMONIC=viable cement sugar uncover oval fiction orchard rain code require accident sea
+ENV INFURA_API_KEY=f4de474d6ec2495da21f350b47b064a1
+ENV INFURA_API_SECRET=c8196ec272a4456e878fd3222bed621e
+ENV INFURA_URL=https://kovan.infura.io/v3/f4de474d6ec2495da21f350b47b064a1
+
+ENV PORT=3003
+ENV CRYPTO_KEY=c5ff42196ee364072b855e6eae1f1bde
+ENV CRYPTO_IV=d084b7e0ad84ac00
+ENV NODEJS_LOGGER_FILES_PATH=console
+ENV DB_NAME=d2odd5j0u9ba6j
+ENV DB_USER=ibcsykojeaycqy
+ENV DB_PASS=1d2e4ab1d4043a34736c0e239427b558e7a06635ed4820c41c424126379d74d0
+ENV DB_HOST=ec2-54-196-65-186.compute-1.amazonaws.com
+ENV DB_PORT=5432
+
+CMD yarn start
