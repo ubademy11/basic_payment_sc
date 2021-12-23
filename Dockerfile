@@ -8,7 +8,7 @@ EXPOSE 3003
 
 RUN yarn
 
-ENV MNEMONIC=viable cement sugar uncover oval fiction orchard rain code require accident sea
+ENV MNEMONIC='viable cement sugar uncover oval fiction orchard rain code require accident sea'
 ENV INFURA_API_KEY=f4de474d6ec2495da21f350b47b064a1
 ENV INFURA_API_SECRET=c8196ec272a4456e878fd3222bed621e
 ENV INFURA_URL=https://kovan.infura.io/v3/f4de474d6ec2495da21f350b47b064a1
