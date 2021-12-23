@@ -39,9 +39,9 @@ const getWallet = ({ }) => index => {
 };
 
 const getBalance = ({ }) => index => {
-  let balanceInEth;
   const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
-  return provider.getBalance(accounts[index - 1].address).then((balance) => {
+  console.log(getWalletData()(index));
+  return provider.getBalance(getWalletData()(index).address).then((balance) => {
     balanceInEth = ethers.utils.formatEther(balance);
     return balanceInEth;
   })
