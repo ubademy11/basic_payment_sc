@@ -7,30 +7,8 @@ name: Push Container to Okteto
 on: [push]
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-
-      - name: Set Version
-        uses: actions/setup-node@v2
-      
-      - name: Setup dependencies
-        run: |
-          sudo npm install -g npm
-          npm -v
-          node -v
-          sudo npm install --global yarn
-          yarn --version
-          yarn --frozen-lockfile
-      - name: Run lint
-        run: yarn lint:ci --fix
-      #- name: Run tests
-        #run: yarn test
   deploy:
     runs-on: ubuntu-latest
-    needs: tests
     steps:
     - uses: actions/checkout@v1
 
