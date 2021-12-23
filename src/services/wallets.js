@@ -38,10 +38,9 @@ const getWallet = ({ }) => index => {
   return new ethers.Wallet(accounts[index - 1].privateKey, provider);
 };
 
-const getBalance = ({ }) => index => {
+const getBalance = ({ }) => userId => {
   const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
-  console.log(getWalletData()(index));
-  return provider.getBalance(getWalletData()(index).address).then((balance) => {
+  return provider.getBalance(getWalletData()(userId).address).then((balance) => {
     balanceInEth = ethers.utils.formatEther(balance);
     return balanceInEth;
   })
