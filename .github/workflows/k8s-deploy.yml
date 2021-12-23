@@ -1,10 +1,9 @@
 name: Push Container to Okteto
 
-#TODO: Replace by:
-  #on:
-  #push:
-    #branches: [ main ]
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -29,7 +28,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ubademyg12/payments-service:tagname
         labels: ${{ steps.meta.outputs.labels }}
 
     - uses: okteto/login@master
