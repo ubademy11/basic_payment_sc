@@ -28,6 +28,6 @@ spec:
   type: ClusterIP
   ports:
   - name: payments-service
-    port: 3005
+    port: 3003
   selector:
     app: payments-service
