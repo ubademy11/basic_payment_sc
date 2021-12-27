@@ -1,5 +1,5 @@
 const ethers = require("ethers");
-const accounts = [];
+const Wallet = require('../lib/wallet/model');
 
 const getDeployerWallet = ({ config }) => () => {
   const provider = new ethers.providers.InfuraProvider(config.network, config.infuraApiKey);
@@ -12,12 +12,11 @@ const createWallet = () => async () => {
   const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
   // This may break in some environments, keep an eye on it
   const wallet = ethers.Wallet.createRandom().connect(provider);
-  accounts.push({
+  Wallet.create({
     address: wallet.address,
     privateKey: wallet.privateKey,
-  });
+  })
   const result = {
-    id: accounts.length,
     address: wallet.address,
     privateKey: wallet.privateKey,
   };
@@ -25,17 +24,17 @@ const createWallet = () => async () => {
 };
 
 const getWalletsData = () => () => {
-  return accounts;
+  return Wallet.findAll();
 };
 
-const getWalletData = () => index => {
-  return accounts[index - 1];
+const getWalletData = () => userId => {
+  return Wallet.findOne({ userId });
 };
 
-const getWallet = ({ }) => index => {
+const getWallet = ({ }) => async (id) => {
   const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
-
-  return new ethers.Wallet(accounts[index - 1].privateKey, provider);
+  const wallet = await Wallet.findOne({ id });
+  return new ethers.Wallet(wallet.privateKey, provider);
 };
 
 const getBalance = ({ }) => userId => {

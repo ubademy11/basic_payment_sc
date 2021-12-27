@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-service
+  template:
+    metadata:
+      labels:
+        app: payments-service
+    spec:
+      containers:
+      - image: ubademyg12/payments-service:tagname
+        name: payments-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-service
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+spec:
+  type: ClusterIP
+  ports:
+  - name: payments-service
+    port: 3003
+  selector:
+    app: payments-service

@@ -18,7 +18,6 @@ const deposit = ({ config }) => async (senderWallet, amountToSend) => {
     });
     console.log('g3', tx)
     const a = await tx.wait(1)
-    console.log('g2', a)
       .then(
         receipt => {
           console.log("Transaction mined");
