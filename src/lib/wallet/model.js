@@ -2,8 +2,9 @@
 
 const { DataTypes, Model } = require('sequelize');
 const { dbInstance } = require('../db');
+const User = require('../user/model');
 
-class Wallet extends Model {}
+class Wallet extends Model { }
 
 Wallet.init(
   {

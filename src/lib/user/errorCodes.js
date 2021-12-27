@@ -1,0 +1,5 @@
+'use strict';
+
+exports.USER_ALREADY_EXISTS = 'USER_ALREADY_EXISTS';
+exports.USER_NOT_FOUND = 'USER_NOT_FOUND';
+exports.INVALID_TOKEN = 'INVALID_TOKEN';
