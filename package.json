@@ -9,6 +9,7 @@
     "hardhat": "2.0.6",
     "hardhat-deploy": "0.7.4",
     "hardhat-deploy-ethers": "0.3.0-beta.7",
+    "pg": "^8.7.1",
     "sequelize": "^7.0.0-alpha.2",
     "solc": "0.7.4"
   },

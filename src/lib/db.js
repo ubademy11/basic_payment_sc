@@ -1,5 +1,5 @@
 'use strict';
-
+require("dotenv").config();
 const { Sequelize } = require('sequelize');
 
 const options = {
