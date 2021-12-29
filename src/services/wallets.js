@@ -29,21 +29,28 @@ const getWalletsData = () => () => {
   return Wallet.findAll();
 };
 
-const getWalletData = () => userId => {
-  return Wallet.findOne({ userId });
+const getWalletData = () => async (userId) => {
+  const wallet = await Wallet.findOne({
+    where: {
+      userId,
+    }
+  });
+  return wallet;
 };
 
 const getWallet = ({ }) => async (id) => {
   const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
-  const wallet = await Wallet.findOne({ userId: id });
+  const wallet = await getWalletData()(id);
   return new ethers.Wallet(wallet.privateKey, provider);
 };
 
-const getBalance = ({ }) => userId => {
+const getBalance = ({ }) => async (userId) => {
   const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
-  return provider.getBalance(getWalletData()(userId).address).then((balance) => {
+  const wallet = await getWalletData()(userId);
+  return provider.getBalance(wallet.address).then((balance) => {
     balanceInEth = ethers.utils.formatEther(balance);
-    return balanceInEth;
+    const res = { address: wallet.address, balance: balanceInEth };
+    return res;
   })
 }
 

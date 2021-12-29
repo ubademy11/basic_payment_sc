@@ -17,3 +17,5 @@ docs/
 *.tsbuildinfo
 coverage.json
 npm-debug.log*
+rinkeby
+kovan

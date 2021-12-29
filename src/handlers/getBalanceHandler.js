@@ -14,8 +14,8 @@ function schema() {
 
 function handler({ walletService }) {
     return async function (req, reply) {
-        const balance = await walletService.getBalance(req.query.userId);
-        reply.code(200).send({ balance: balance });
+        const body = await walletService.getBalance(req.query.userId);
+        reply.code(200).send(body);
     };
 }
 
