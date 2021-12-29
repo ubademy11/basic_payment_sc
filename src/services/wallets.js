@@ -39,10 +39,19 @@ const getWallet = ({ }) => async (id) => {
   return new ethers.Wallet(wallet.privateKey, provider);
 };
 
+const getBalance = ({ }) => userId => {
+  const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
+  return provider.getBalance(getWalletData()(userId).address).then((balance) => {
+    balanceInEth = ethers.utils.formatEther(balance);
+    return balanceInEth;
+  })
+}
+
 module.exports = ({ config }) => ({
   createWallet: createWallet({ config }),
   getDeployerWallet: getDeployerWallet({ config }),
   getWalletsData: getWalletsData({ config }),
   getWalletData: getWalletData({ config }),
   getWallet: getWallet({ config }),
+  getBalance: getBalance({ config }),
 });
