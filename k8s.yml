@@ -13,7 +13,8 @@ spec:
         app: payments-service
     spec:
       containers:
-      - image: ubademyg12/payments-service:tagname
+      - image: registry.cloud.okteto.net/distance71/payments-service:okteto
+        imagePullPolicy: Always
         name: payments-service
 
 ---
