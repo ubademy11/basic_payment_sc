@@ -3,7 +3,7 @@
 const { DataTypes, Model } = require('sequelize');
 const { dbInstance } = require('../db');
 
-class User extends Model {}
+class User extends Model { }
 
 User.init(
   {

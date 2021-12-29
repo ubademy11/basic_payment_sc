@@ -29,5 +29,6 @@ spec:
   ports:
   - name: payments-service
     port: 3003
+    targetPort: 3003
   selector:
     app: payments-service

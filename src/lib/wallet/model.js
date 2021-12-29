@@ -2,8 +2,9 @@
 
 const { DataTypes, Model } = require('sequelize');
 const { dbInstance } = require('../db');
+const User = require('../user/model');
 
-class Wallet extends Model {}
+class Wallet extends Model { }
 
 Wallet.init(
   {
@@ -17,12 +18,13 @@ Wallet.init(
     },
   },
   {
+    freezeTableName: true,
     sequelize: dbInstance,
     modelName: 'Wallet',
-    tableName: 'wallet',
+    tableName: "wallet",
   },
 );
 
-Wallet.belongsTo(User, { as: 'userId' })
+Wallet.belongsTo(User, { as: 'user' })
 
 module.exports = Wallet;

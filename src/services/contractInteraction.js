@@ -1,4 +1,3 @@
-
 const ethers = require("ethers");
 const getDepositHandler = require("../handlers/getDepositHandler");
 
@@ -10,14 +9,12 @@ const deposits = {};
 
 const deposit = ({ config }) => async (senderWallet, amountToSend) => {
   try {
-    console.log('g1')
+
     const basicPayments = await getContract(config, senderWallet);
-    console.log('g2', basicPayments)
     const tx = await basicPayments.deposit({
       value: await ethers.utils.parseEther(amountToSend).toHexString(),
     });
-    console.log('g3', tx)
-    const a = await tx.wait(1)
+    tx.wait(1)
       .then(
         receipt => {
           console.log("Transaction mined");
@@ -56,7 +53,11 @@ const sendPayment = ({ config }) => async (recipientAddress, deployerWallet, amo
   const amount = await ethers.utils.parseEther(amountToSend).toHexString();
   const tx = await basicPayments.sendPayment(recipientAddress, amount, options);
 
-  await tx.wait(1);
+  return tx.wait(1).then(receipt => {
+    return receipt;
+  }, error => {
+    throw error;
+  });
 }
 
 const getDepositReceipt = ({ }) => async depositTxHash => {
