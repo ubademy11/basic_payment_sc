@@ -26,5 +26,6 @@ Wallet.init(
 );
 
 Wallet.belongsTo(User, { as: 'user' })
+Wallet.sync({ alter: true });
 
 module.exports = Wallet;

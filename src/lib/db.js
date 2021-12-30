@@ -24,7 +24,7 @@ else {
 
 const connectToDB = async () => {
   await sequelize.authenticate();
-  await sequelize.sync({ alter: true });
+  await sequelize.sync({ alter: false });
 };
 
 module.exports = { connectToDB, dbInstance: sequelize };

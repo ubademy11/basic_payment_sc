@@ -44,3 +44,9 @@ jobs:
       uses: okteto/apply@master
       with:
         manifest: k8s.yml
+    
+    - name: Restart Cluster
+      uses: steebchen/kubectl@v2.0.0
+      with:
+        config: ${{ secrets.KUBE_CONFIG_DATA }}
+        command: rollout restart deployment/payments-service        
