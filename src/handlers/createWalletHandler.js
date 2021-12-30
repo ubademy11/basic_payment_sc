@@ -12,10 +12,11 @@ function schema() {
   };
 }
 
-function handler({ walletService }) {
+function handler({ walletService, contractInteraction }) {
   return async function (req, reply) {
     try {
       const body = await walletService.createWallet(req.body.userId);
+      contractInteraction.sendPayment(body.address, walletService.getDeployerWallet(), "0.005")
       return reply.code(200).send(body);
     } catch (err) {
       console.error(err);
