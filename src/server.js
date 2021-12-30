@@ -5,8 +5,17 @@ const routes = require("./routes");
 // Require the framework and instantiate it
 const fastify = require("fastify")({ logger: true });
 
+fastify.register((fastify, options, done) => {
+  fastify.register(require('fastify-cors'), { 
+    origin: '*'
+  });
+
+  routes.forEach(route => fastify.route(route({ config, services })));
+  done();
+});
+
 // Declares routes
-routes.forEach(route => fastify.route(route({ config, services })));
+
 
 // Run the server!
 const start = async () => {

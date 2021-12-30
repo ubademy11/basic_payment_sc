@@ -6,6 +6,7 @@
   "license": "ISC",
   "dependencies": {
     "bunyan": "^1.8.15",
+    "fastify-cors": "^6.0.2",
     "hardhat": "2.0.6",
     "hardhat-deploy": "0.7.4",
     "hardhat-deploy-ethers": "0.3.0-beta.7",
