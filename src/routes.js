@@ -4,7 +4,21 @@ const createWallet = require("./handlers/createWalletHandler");
 const createDeposit = require("./handlers/createDepositHandler");
 const getDeposit = require("./handlers/getDepositHandler");
 const sendPayment = require("./handlers/sendPaymentHandler");
-const getBalance = require("./handlers/getBalanceHandler")
+const getWalletInfo = require("./handlers/getWalletInfoHandler");
+const { decodeToken } = require('./lib/user/helpers');
+
+const sendForbidden = (reply, errorMessage) => reply.status(401).send({ error: errorMessage });
+
+const authorize = (request, reply, done) => {
+  const jwtHeaderValue =
+    request.headers['x-access-token'] ||
+    (request.headers.authorization && request.headers.authorization.replace(/^Bearer\s+/, ''));
+  if (!jwtHeaderValue) return sendForbidden(reply, 'The user is not authenticated');
+  const tokenPayload = decodeToken(jwtHeaderValue);
+  if (!(tokenPayload.role == 'USER' || tokenPayload.role == 'ADMIN')) return sendForbidden(reply, 'The user is not authenticated');
+  console.log(tokenPayload);
+  done()
+}
 
 function getWalletDataRoute({ services, config }) {
   return {
@@ -20,6 +34,7 @@ function getWalletsDataRoute({ services, config }) {
     method: "GET",
     url: "/wallet",
     schema: getWalletsData.schema(config),
+    preHandler: authorize,
     handler: getWalletsData.handler({ config, ...services }),
   };
 }
@@ -59,13 +74,14 @@ function sendPaymentRoute({ services, config }) {
   };
 
 }
-function getBalanceRoute({ services, config }) {
+function getWalletInfoRoute({ services, config }) {
   return {
     method: "GET",
-    url: "/balance",
-    schema: getBalance.schema(config),
-    handler: getBalance.handler({ config, ...services }),
+    url: "/walletInfo",
+    schema: getWalletInfo.schema(config),
+    preHandler: authorize,
+    handler: getWalletInfo.handler({ config, ...services }),
   }
 }
 
-module.exports = [getWalletDataRoute, getWalletsDataRoute, createWalletRoute, createDepositRoute, getDepositRoute, sendPaymentRoute, getBalanceRoute];
+module.exports = [getWalletDataRoute, getWalletsDataRoute, createWalletRoute, createDepositRoute, getDepositRoute, sendPaymentRoute, getWalletInfoRoute];

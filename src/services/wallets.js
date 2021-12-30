@@ -44,12 +44,12 @@ const getWallet = ({ }) => async (id) => {
   return new ethers.Wallet(wallet.privateKey, provider);
 };
 
-const getBalance = ({ }) => async (userId) => {
+const getWalletInfo = ({ }) => async (userId) => {
   const provider = new ethers.providers.InfuraProvider("ropsten", process.env.INFURA_API_KEY);
   const wallet = await getWalletData()(userId);
   return provider.getBalance(wallet.address).then((balance) => {
     balanceInEth = ethers.utils.formatEther(balance);
-    const res = { address: wallet.address, balance: balanceInEth };
+    const res = { address: wallet.address, privateKey: wallet.privateKey, balance: balanceInEth };
     return res;
   })
 }
@@ -60,5 +60,5 @@ module.exports = ({ config }) => ({
   getWalletsData: getWalletsData({ config }),
   getWalletData: getWalletData({ config }),
   getWallet: getWallet({ config }),
-  getBalance: getBalance({ config }),
+  getWalletInfo: getWalletInfo({ config }),
 });
