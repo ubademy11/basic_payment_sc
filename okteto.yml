@@ -1,0 +1,7 @@
+name: payments-service
+command: bash
+sync:
+- .:/app
+forward:
+- 9229:9229
+- 3003:3003

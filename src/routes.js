@@ -9,14 +9,15 @@ const { decodeToken } = require('./lib/user/helpers');
 
 const sendForbidden = (reply, errorMessage) => reply.status(401).send({ error: errorMessage });
 
-const authorize = (request, reply, done) => {
+const authorize = (req, reply, done) => {
   const jwtHeaderValue =
-    request.headers['x-access-token'] ||
-    (request.headers.authorization && request.headers.authorization.replace(/^Bearer\s+/, ''));
+  req.headers['x-access-token'] ||
+    (req.headers.authorization && req.headers.authorization.replace(/^Bearer\s+/, ''));
   if (!jwtHeaderValue) return sendForbidden(reply, 'The user is not authenticated');
   const tokenPayload = decodeToken(jwtHeaderValue);
   if (!(tokenPayload.role == 'USER' || tokenPayload.role == 'ADMIN')) return sendForbidden(reply, 'The user is not authenticated');
   console.log(tokenPayload);
+  req.user = tokenPayload;
   done()
 }
 
