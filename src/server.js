@@ -23,7 +23,7 @@ const start = async () => {
   try {
     await connectToDB();
     console.log('Connected to DATABASE');
-    await fastify.listen(3003);
+    await fastify.listen(3003, '0.0.0.0');
     fastify.log.info(`server listening on ${fastify.server.address().port}`);
   } catch (err) {
     fastify.log.error(err);
