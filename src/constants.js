@@ -1,0 +1,26 @@
+'use strict';
+
+exports.SERVICE_NAME = 'user-service';
+
+const { USER_JWT_SECRET, NODEJS_LOGGER_FILES_PATH, NODEJS_LOGGER_CONSOLE_LEVEL } = process.env;
+
+const defaults = {
+  JWT_SECRET: 'Lf59iLTXfeUQM5eXLarKu4u7ev4cRqRk9fxUBLqV2mPgdgyncwdUXyWPwhFyqy5P',
+  LOGGER_PATH: './log',
+  LOGGER_CONSOLE_LEVEL: 'info',
+};
+
+exports.JWT_SECRET = USER_JWT_SECRET || defaults.JWT_SECRET;
+exports.JWT_EXPIRATION = 60; // in minutes
+
+exports.LOGGER_CONFIG = {
+  PATH: NODEJS_LOGGER_FILES_PATH || defaults.LOGGER_PATH,
+  CONSOLE_LEVEL: NODEJS_LOGGER_CONSOLE_LEVEL || defaults.LOGGER_CONSOLE_LEVEL,
+};
+
+exports.USER_ROLES = {
+  CREATOR: 'CREATOR',
+  USER: 'USER',
+  COLLABORATOR: 'COLLABORATOR',
+  ADMIN: 'ADMIN',
+};

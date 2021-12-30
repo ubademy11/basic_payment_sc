@@ -2,7 +2,6 @@
 
 const jwt = require('jsonwebtoken');
 
-const { logger } = require('../logger');
 
 const { JWT_SECRET } = require('../../constants');
 const { INVALID_TOKEN } = require('./errorCodes');
@@ -19,7 +18,7 @@ function decodeToken(token) {
   try {
     return jwt.verify(token, JWT_SECRET);
   } catch (err) {
-    logger.warn({ token }, 'Token failed validation');
+    console.error({ token }, 'Token failed validation');
     throw new Error(INVALID_TOKEN);
   }
 }
